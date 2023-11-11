@@ -40,7 +40,9 @@ jobs:
       - name: Install Lambda Dependencies
         run: |
           cd lambda-layers
+          cd nodejs
           npm install --force
+          cd ..
           cd ..
 
       # BUILD
