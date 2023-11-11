@@ -2,7 +2,8 @@
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { LambdaLayersStack } from "../lib/lambda-layers-stack";
-const service = "livecart-products-api";
+
+const service = "lambda-layers";
 let stage;
 const app = new cdk.App();
 
