@@ -37,7 +37,7 @@ jobs:
         run: npm install --force
 
       # INSTALL LAMBDA LAYERS DEPENDENCIES
-      - name: Install Lambda Dependencies
+      - name: Install Lambda Layer Dependencies
         run: |
           cd lambda-layers
           cd nodejs
@@ -54,7 +54,7 @@ jobs:
 
       # DEPLOYMENT
       - name: Deploy Dev Stacks
-        if: "!contains(github.ref,'dev')"
+        if: "!contains(github.ref,'main')"
         run: |
           STAGE=dev cdk deploy lambda-layers-d --require-approval never
 
