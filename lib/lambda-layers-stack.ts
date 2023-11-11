@@ -18,12 +18,12 @@ export class LambdaLayersStack extends cdk.Stack {
 
     const layer = new lambda.LayerVersion(this, `${service}-${stage}-layer`, {
       layerVersionName: `${service}-${stage}-layer`,
-      code: lambda.Code.fromAsset("lambdalayer"),
+      code: lambda.Code.fromAsset("lambda-layers"),
       compatibleRuntimes: [lambda.Runtime.NODEJS_18_X],
     });
 
     new s3deploy.BucketDeployment(this, `${service}-${stage}-deployment`, {
-      sources: [s3deploy.Source.asset("./lambdalayer")],
+      sources: [s3deploy.Source.asset("./lambda-layers")],
       destinationBucket: bucket,
     });
 
