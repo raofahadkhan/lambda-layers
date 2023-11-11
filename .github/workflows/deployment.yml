@@ -42,8 +42,7 @@ jobs:
           cd lambda-layers
           cd nodejs
           npm install --force
-          cd ..
-          cd ..
+          cd ../..
 
       # BUILD
       - name: Build (using Typescript)
