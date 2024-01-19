@@ -12,8 +12,8 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
 
-    environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'main' || github.ref == 'refs/heads/dev' && 'dev' }}
+    # environment:
+    #   name: ${{ github.ref == 'refs/heads/main' && 'main' || github.ref == 'refs/heads/dev' && 'dev' }}
 
     steps:
       - name: Checkout repository
@@ -59,9 +59,9 @@ jobs:
       - name: Deploy Dev Stacks
         if: "!contains(github.ref,'main')"
         run: |
-          STAGE=dev cdk deploy lambda-layers-d --require-approval never
+          STAGE=dev cdk deploy lambda-layers-d --context db=${{ secrets.DATABASE_ARN_DEV }} --require-approval never
 
       - name: Deploy Main Stacks
         if: contains(github.ref,'main')
         run: |
-          STAGE=main cdk deploy lambda-layers-m --require-approval never
+          STAGE=main cdk deploy lambda-layers-m --context db=${{ secrets.DATABASE_ARN_MAIN }} --require-approval never
