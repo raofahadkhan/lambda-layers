@@ -12,47 +12,47 @@ export class LambdaLayersStack extends cdk.Stack {
 
     const databaseArn = this.node.tryGetContext("db");
 
-    const bucket = new s3.Bucket(this, `${service}-${stage}-bucket`, {
-      bucketName: `${service}-${stage}-bucket`,
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-      versioned: true,
-    });
+    // const bucket = new s3.Bucket(this, `${service}-${stage}-bucket`, {
+    //   bucketName: `${service}-${stage}-bucket`,
+    //   removalPolicy: cdk.RemovalPolicy.RETAIN,
+    //   versioned: true,
+    // });
 
-    const layer = new lambda.LayerVersion(this, `${service}-${stage}-layer`, {
-      layerVersionName: `${service}-${stage}-layer`,
-      code: lambda.Code.fromAsset("lambda-layers"),
-      compatibleRuntimes: [lambda.Runtime.NODEJS_18_X],
-    });
+    // const layer = new lambda.LayerVersion(this, `${service}-${stage}-layer`, {
+    //   layerVersionName: `${service}-${stage}-layer`,
+    //   code: lambda.Code.fromAsset("lambda-layers"),
+    //   compatibleRuntimes: [lambda.Runtime.NODEJS_18_X],
+    // });
 
-    new s3deploy.BucketDeployment(this, `${service}-${stage}-deployment`, {
-      sources: [s3deploy.Source.asset("./lambda-layers")],
-      destinationBucket: bucket,
-    });
+    // new s3deploy.BucketDeployment(this, `${service}-${stage}-deployment`, {
+    //   sources: [s3deploy.Source.asset("./lambda-layers")],
+    //   destinationBucket: bucket,
+    // });
 
-    const layerLambda = new lambda.Function(
-      this,
-      `${service}-${stage}-function`,
-      {
-        functionName: `${service}-${stage}-function`,
-        runtime: lambda.Runtime.NODEJS_18_X,
-        code: lambda.Code.fromAsset("lambda"),
-        handler: "hello.handler",
-        layers: [layer],
-      }
-    );
+    // const layerLambda = new lambda.Function(
+    //   this,
+    //   `${service}-${stage}-function`,
+    //   {
+    //     functionName: `${service}-${stage}-function`,
+    //     runtime: lambda.Runtime.NODEJS_18_X,
+    //     code: lambda.Code.fromAsset("lambda"),
+    //     handler: "hello.handler",
+    //     layers: [layer],
+    //   }
+    // );
 
-    new cdk.CfnOutput(this, `${service}-${stage}-bucket-output`, {
-      value: bucket.bucketName,
-      exportName: "lambdalayerstackstack-layerbucketf5b16ca1-1o5ztngm5m6zl",
-    });
+    // new cdk.CfnOutput(this, `${service}-${stage}-bucket-output`, {
+    //   value: bucket.bucketName,
+    //   exportName: "lambdalayerstackstack-layerbucketf5b16ca1-1o5ztngm5m6zl",
+    // });
 
-    new cdk.CfnOutput(this, `${service}-${stage}-Arn`, {
-      value: layer.layerVersionArn,
-      exportName:
-        "arn:aws:lambda:us-west-1:911519397586:layer:MyLayer38944FA5:1",
-    });
+    // new cdk.CfnOutput(this, `${service}-${stage}-Arn`, {
+    //   value: layer.layerVersionArn,
+    //   exportName:
+    //     "arn:aws:lambda:us-west-1:911519397586:layer:MyLayer38944FA5:1",
+    // });
 
-    new cdk.CfnOutput(this, `${service}-${stage}-Arn`, {
+    new cdk.CfnOutput(this, `${service}-${stage}-db-creds`, {
       value: databaseArn,
       exportName: "db-creds",
     });
