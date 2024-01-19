@@ -12,6 +12,12 @@ export class LambdaLayersStack extends cdk.Stack {
 
     const databaseArn = this.node.tryGetContext("db");
 
+    if (!databaseArn) {
+      throw new Error("Database ARN is not provided in context parameters.");
+    }
+
+    console.log("DATABASE ARN >>> ", databaseArn);
+
     // const bucket = new s3.Bucket(this, `${service}-${stage}-bucket`, {
     //   bucketName: `${service}-${stage}-bucket`,
     //   removalPolicy: cdk.RemovalPolicy.RETAIN,
