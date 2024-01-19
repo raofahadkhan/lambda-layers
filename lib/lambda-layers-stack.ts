@@ -10,13 +10,17 @@ export class LambdaLayersStack extends cdk.Stack {
 
     const { service, stage } = props?.tags!;
 
-    const databaseArn = this.node.tryGetContext("db");
+    // const databaseArn = this.node.tryGetContext("db");
 
-    if (!databaseArn) {
-      throw new Error("Database ARN is not provided in context parameters.");
-    }
+    const mainDbArnSecret = process.env.DB_MAIN_ARN || "";
+    const devDbArnSecret = process.env.DB_DEV_ARN || "";
 
-    console.log("DATABASE ARN >>> ", databaseArn);
+    // if (!databaseArn) {
+    //   throw new Error("Database ARN is not provided in context parameters.");
+    // }
+
+    console.log("DATABASE ARN >>> ", mainDbArnSecret);
+    console.log("DATABASE ARN >>> ", devDbArnSecret);
 
     // const bucket = new s3.Bucket(this, `${service}-${stage}-bucket`, {
     //   bucketName: `${service}-${stage}-bucket`,
@@ -58,9 +62,9 @@ export class LambdaLayersStack extends cdk.Stack {
     //     "arn:aws:lambda:us-west-1:911519397586:layer:MyLayer38944FA5:1",
     // });
 
-    new cdk.CfnOutput(this, `${service}-${stage}-db-creds`, {
-      value: databaseArn,
-      exportName: "db-creds",
-    });
+    // new cdk.CfnOutput(this, `${service}-${stage}-db-creds`, {
+    //   value: databaseArn,
+    //   exportName: "db-creds",
+    // });
   }
 }
