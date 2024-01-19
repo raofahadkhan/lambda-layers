@@ -12,6 +12,9 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
 
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'main' || github.ref == 'refs/heads/dev' && 'dev' }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

@@ -10,6 +10,8 @@ export class LambdaLayersStack extends cdk.Stack {
 
     const { service, stage } = props?.tags!;
 
+    const databaseArn = this.node.tryGetContext("db");
+
     const bucket = new s3.Bucket(this, `${service}-${stage}-bucket`, {
       bucketName: `${service}-${stage}-bucket`,
       removalPolicy: cdk.RemovalPolicy.RETAIN,
@@ -27,13 +29,17 @@ export class LambdaLayersStack extends cdk.Stack {
       destinationBucket: bucket,
     });
 
-    const layerLambda = new lambda.Function(this, `${service}-${stage}-function`, {
-      functionName: `${service}-${stage}-function`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      code: lambda.Code.fromAsset("lambda"),
-      handler: "hello.handler",
-      layers: [layer],
-    });
+    const layerLambda = new lambda.Function(
+      this,
+      `${service}-${stage}-function`,
+      {
+        functionName: `${service}-${stage}-function`,
+        runtime: lambda.Runtime.NODEJS_18_X,
+        code: lambda.Code.fromAsset("lambda"),
+        handler: "hello.handler",
+        layers: [layer],
+      }
+    );
 
     new cdk.CfnOutput(this, `${service}-${stage}-bucket-output`, {
       value: bucket.bucketName,
@@ -42,7 +48,13 @@ export class LambdaLayersStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, `${service}-${stage}-Arn`, {
       value: layer.layerVersionArn,
-      exportName: "arn:aws:lambda:us-west-1:911519397586:layer:MyLayer38944FA5:1",
+      exportName:
+        "arn:aws:lambda:us-west-1:911519397586:layer:MyLayer38944FA5:1",
+    });
+
+    new cdk.CfnOutput(this, `${service}-${stage}-Arn`, {
+      value: databaseArn,
+      exportName: "db-creds",
     });
   }
 }
